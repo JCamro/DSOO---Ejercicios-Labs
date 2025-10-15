@@ -3,13 +3,13 @@ import java.util.*;
 
 public class GestorCitas {
     private ArrayList<Cita> agendaCitas;
-    private HashMap<String, Paciente> listaPacientes;
-    private HashMap<String, Doctor> listaDoctores;
+    private ArrayList<Paciente> listaPacientes;
+    private ArrayList<Doctor> listaDoctores;
 
     public GestorCitas() {
         agendaCitas = new ArrayList<>();
-        listaDoctores = new HashMap<>();
-        listaPacientes = new HashMap<>();
+        listaDoctores = new ArrayList<>();
+        listaPacientes = new ArrayList<>();
     }
     
     //Metodo agregar Doctor a la Base
@@ -47,11 +47,12 @@ public class GestorCitas {
     }
 
     //Metodo que evalua si el codigo relacionado ya existe en un Mapa
-    private boolean codigoNoRepetido(Map<String, ?> lista, String codigo) {
-        if (lista.containsKey(codigo)) {
-            return false;
+    private boolean codigoNoRepetidoDoctor(ArrayList<?> lista, String codigo) {
+        for (Object object : lista) {
+            if (object.) {
+                
+            }
         }
-        return true;
     }
 
     //Metodo que evalua si un String esta vacio
