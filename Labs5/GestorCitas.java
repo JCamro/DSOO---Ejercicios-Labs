@@ -1,6 +1,8 @@
 import java.time.LocalTime;
 import java.util.*;
 
+import javax.print.Doc;
+
 public class GestorCitas {
     private ArrayList<Cita> agendaCitas;
     private ArrayList<Paciente> listaPacientes;
@@ -19,12 +21,12 @@ public class GestorCitas {
             System.out.println("Error: Doctor es nulo\n");
             return;
         }
-        if (esCadenaVacia(doctor.getCodigo())) {
-            System.out.println("Error: Codigo vacio, llene los datos\n");
+        if (!stringValido(doctor.getNombre()) || !stringValido(doctor.getEspecialidad()) || !stringValido(doctor.getCodigo())) {
+            System.out.println("Error: Nombre, especialidad o codigo no debe ser vacio/nulo");
             return;
         }
-        if (!codigoNoRepetido(listaDoctores, doctor.getCodigo())) {
-            System.out.println("Error: Doctor ya existe\n");
+        if (buscarDoctor(doctor.getCodigo())!=null) {
+            System.out.println("Error: Codigo ya existente, no se hicieron cambios");
             return;
         }
         if (!edadValida(doctor.getEdad())) {
@@ -43,21 +45,42 @@ public class GestorCitas {
         System.out.println("====== SISTEMA ======");
         System.out.println("Se agrego a: "+doctor+"\n");
 
-        listaDoctores.put(doctor.getCodigo(), doctor);
+        listaDoctores.add(doctor);
     }
 
-    //Metodo que evalua si el codigo relacionado ya existe en un Mapa
-    private boolean codigoNoRepetidoDoctor(ArrayList<?> lista, String codigo) {
-        for (Object object : lista) {
-            if (object.) {
-                
+
+    private Doctor buscarDoctor(String codigo) {
+        for (Doctor doctor : listaDoctores) {
+            if (doctor.getCodigo().equalsIgnoreCase(codigo)) {
+                return doctor;
             }
         }
+        return null;
     }
+    
+    private Paciente buscarPaciente(String codigo) {
+        for (Paciente paciente : listaPacientes) {
+            if (paciente.getCodigo().equalsIgnoreCase(codigo)) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+    
+    private Cita buscarCita(String codigo) {
+        for (Cita cita : agendaCitas) {
+            if (cita.getCodigoCita().equalsIgnoreCase(codigo)) {
+                return cita;
+            }
+        }
+        return null;
+    }
+    
+    
 
     //Metodo que evalua si un String esta vacio
-    private boolean esCadenaVacia(String cadena){
-        return cadena.trim().isEmpty();
+    private boolean stringValido(String cadena){
+        return cadena!=null && cadena.trim().isEmpty();
     }
 
     //Metodo Agregar Paciente a la Base
@@ -142,14 +165,7 @@ public class GestorCitas {
         
     }
 
-    private Cita buscarCita(String codigoCita) {
-        for (Cita cita : agendaCitas) {
-            if (cita.getCodigoCita().equalsIgnoreCase(codigoCita)) {
-                return cita;
-            }
-        }
-        return null;
-    }
+    
 
 
     private boolean horarioLibre(ArrayList<Cita> citasDoctor, LocalTime hora) {
