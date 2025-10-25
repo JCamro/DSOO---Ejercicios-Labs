@@ -1,4 +1,6 @@
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Doctor {
@@ -16,9 +18,23 @@ public class Doctor {
         this.especialidad=especialidad;
         this.edad=edad;
 
-        this.horaEntrada = LocalTime.parse(horaEntrada);
-        this.horaSalida = LocalTime.parse(horaSalida);
+        // Si la hora ingresada no corresponde al formato, lanza una excepción y no se crea el objeto  
+        this.horaEntrada = validarHora(horaEntrada,"hora entrada"); 
+        this.horaSalida = validarHora(horaSalida, "hora salida");
     }
+
+    // Formato de hora HH:mm
+    private DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
+
+    // Metodo que valida el formato de la hora (HH:mm)
+    private LocalTime validarHora(String hora, String tipoHora) {
+        try {
+            return LocalTime.parse(hora, FORMATO_HORA);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato inválido para la " + tipoHora + ". Debe estar en formato HH:mm, por ejemplo 09:30 o 17:00.");
+        }
+    }
+    
 
     public String getCodigo() {return codigo;}
     public int getEdad() {return edad;}
